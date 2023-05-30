@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 
 const userController = require("./controllers/user.controller.js");
+const { saveToken } = require("./utils/JwtUtils.js");
 
 app.use("/users", userController);
 app.get("/health_check", (req, res) => {
@@ -15,6 +16,16 @@ app.get("/health_check", (req, res) => {
     .status(200)
     .send("Hi my dear friend, i am working fine don't worry");
 });
+
+app.get("/set-cookie", (req, res) => {
+  // Set the cookie in the response headers
+  res.cookie("cookieName", "cookieValue", { maxAge: 300000 }); // Expires after 5 minutes
+
+  // Send a response to the client
+  res.send("Cookie has been set");
+});
+
+// saveToken("token");
 
 // ***************************************
 

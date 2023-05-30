@@ -40,4 +40,22 @@ async function removeTokenFromDb(tokenValue) {
   }
 }
 
-module.exports = { saveToken, removeTokenFromDb };
+/**
+ * This function is used to check token present in db or not
+ * @param {String} token
+ * @returns {Boolean}
+ */
+async function isTokenPresentInDb(token) {
+  try {
+    const token = await JwtToken.findOne({ token: token });
+    if (token) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("Error in isTokenPresentInDb:", error);
+  }
+}
+
+module.exports = { saveToken, removeTokenFromDb, isTokenPresentInDb };

@@ -17,13 +17,13 @@ app.get("/health_check", (req, res) => {
     .send("Hi my dear friend, i am working fine don't worry");
 });
 
-app.get("/set-cookie", (req, res) => {
-  // Set the cookie in the response headers
-  res.cookie("cookieName", "cookieValue", { maxAge: 300000 }); // Expires after 5 minutes
+// app.get("/set-cookie", (req, res) => {
+//   // Set the cookie in the response headers
+//   res.cookie("cookieName", "cookieValue", { maxAge: 300000 }); // Expires after 5 minutes
 
-  // Send a response to the client
-  res.send("Cookie has been set");
-});
+//   // Send a response to the client
+//   res.send("Cookie has been set");
+// });
 
 // saveToken("token");
 

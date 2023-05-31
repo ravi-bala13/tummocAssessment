@@ -1,11 +1,13 @@
 import "./App.css";
-import Signup from "./Components/Signup";
+import AllRoutes from "./Components/AllRoutes";
+import NavbarTop from "./Components/Navbar";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
     <div className="App">
-      {/* <Login /> */}
-      <Signup />
+      <NavbarTop />
+      <AllRoutes />
     </div>
   );
 }

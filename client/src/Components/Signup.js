@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GLogin from "./GLogin";
+import { BackendUrl } from "../Utils/Contants";
+import axios from "axios";
 
 export default function Signup() {
   const defaultTheme = createTheme();
@@ -25,7 +27,30 @@ export default function Signup() {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      let url = BackendUrl + "register";
+      console.log("Network calling to url", url);
+      axios
+        .post(url, userDetails)
+        .then((res) => {
+          console.log("Response", res);
+        })
+        .catch((error) => {
+          console.log("error:", error);
+        });
+    } catch (error) {
+      console.log("Error in handleSubmit", error);
+    }
+    setUserDetails({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    });
+  };
+
   return (
     <div className="user_form">
       <ThemeProvider theme={defaultTheme}>

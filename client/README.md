@@ -12,6 +12,16 @@
             npm install react-google-login
         ```
 
+## Steps to use bootstrap in react
+
+    1. Install the required dependencies:
+        ```bash
+            npm install react-bootstrap bootstrap
+        ```
+
+    2. Add this import line in app.js
+        a. import "bootstrap/dist/css/bootstrap.min.css";
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

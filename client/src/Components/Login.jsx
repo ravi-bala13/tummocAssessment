@@ -8,11 +8,12 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GLogin from "./GLogin";
+import { BackendUrl } from "../Utils/Contants";
+import axios from "axios";
 
 export default function Login() {
   const defaultTheme = createTheme();
@@ -26,7 +27,27 @@ export default function Login() {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      let url = BackendUrl + "login";
+      console.log("Network calling to url", url);
+      axios
+        .post(url, userDetails)
+        .then((res) => {
+          console.log("Response", res);
+        })
+        .catch((error) => {
+          console.log("error:", error);
+        });
+    } catch (error) {
+      console.log("Error in handleSubmit", error);
+    }
+    setUserDetails({
+      email: "",
+      password: "",
+    });
+  };
 
   return (
     <div className="user_form">
@@ -85,7 +106,7 @@ export default function Login() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                LogIn
               </Button>
               <Grid container>
                 <Grid item xs>

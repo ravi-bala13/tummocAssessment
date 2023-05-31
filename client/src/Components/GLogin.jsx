@@ -30,31 +30,6 @@ const GLogin = () => {
     // For example, you can store the received token in local storage or use it for further API requests
   };
 
-  const handleGLogin = () => {
-    // window.open("http//localhost:8080/auth/google", "_self");
-    // window.location.href = "http://localhost:8080/auth/google";
-
-    try {
-      let url = "http://localhost:3000/auth/google/callback";
-      console.log("Network calling to url", url);
-      axios
-        .get({
-          url,
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-          },
-        })
-        .then((res) => {
-          console.log("res:", res);
-        })
-        .catch((error) => {
-          console.log("error:", error);
-        });
-    } catch (error) {
-      console.log("Error in handleSubmit", error);
-    }
-  };
-
   return (
     <div className="google_login">
       <GoogleLogin

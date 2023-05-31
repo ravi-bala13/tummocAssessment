@@ -1,4 +1,4 @@
 export const GOOGLE_CLIENT_ID =
-  "114795515832-o3bcjbgu9poa63i47nv8rr15j7i1ivbo.apps.googleusercontent.com";
+  "180935646206-dr4nn5j9rh3rcccakv1rbn8o0tcdaqg2.apps.googleusercontent.com";
 
 export const BackendUrl = "http://localhost:8080/";

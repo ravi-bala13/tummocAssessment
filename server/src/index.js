@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 
+const session = require("express-session");
+
 const { register, login, logout } = require("./controllers/auth.controller");
+const protected = require("./controllers/protected.controller");
 
 const passport = require("./configs/passport");
 const { expireToken } = require("./middlewares/auth.middleware");
@@ -9,7 +12,10 @@ const { expireToken } = require("./middlewares/auth.middleware");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+var corsOptions = {
+  origin: "*",
+};
+app.use(cors(corsOptions));
 
 app.use(passport.initialize());
 // app.use("/users", userController) // /register /login
@@ -33,7 +39,7 @@ app.get("/health_check", (req, res) => {
     .send("Hi my dear friend, i am working fine don't worry");
 });
 
-// app.use("/testing", protected);
+app.use("/testing", protected);
 /**
  * jwt auth
  */

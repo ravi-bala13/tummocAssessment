@@ -1,5 +1,6 @@
 require("dotenv").config();
 const passport = require("passport");
+
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 const JwtStrategy = require("passport-jwt").Strategy;
@@ -27,6 +28,7 @@ const googleOptions = {
 /**
  * using google strategy
  */
+
 passport.use(
   new GoogleStrategy(googleOptions, async function (
     request,
@@ -49,6 +51,7 @@ passport.use(
     }
     console.log("user:", user);
     const token = newToken(user);
+    console.log("token:", token);
     return done(null, { user, token });
   })
 );

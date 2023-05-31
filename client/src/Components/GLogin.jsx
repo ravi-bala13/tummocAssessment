@@ -3,14 +3,18 @@ import React from "react";
 import { GOOGLE_CLIENT_ID } from "../Utils/Contants";
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
+import { setToken } from "../Redux/action";
 
 const GLogin = () => {
+  const dispatch = useDispatch();
+
   const responseGoogle = (response) => {
     console.log("response:", response);
     const clientId = response.clientId;
     console.log("credentialId:", clientId);
 
-    // const handleLogin = () => {
+    dispatch(setToken("token"));
     axios
       .get("/auth/google", {
         params: {
@@ -25,9 +29,6 @@ const GLogin = () => {
         // Handle any error that occurred during the request
         console.error(error);
       });
-    // };
-    // Handle the response received from the server after successful authentication
-    // For example, you can store the received token in local storage or use it for further API requests
   };
 
   return (

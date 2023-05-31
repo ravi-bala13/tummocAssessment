@@ -12,4 +12,4 @@ This repo for the assignment in the MERN stack given from tummaoc
 
     2. Server-side implementation (Node.js with Express):
         a. Install the required dependencies:
-        ```npm install express passport passport-google-oauth20```
+        '''npm install express passport passport-google-oauth20'''

@@ -32,10 +32,12 @@ export default function Login() {
     try {
       let url = BackendUrl + "login";
       console.log("Network calling to url", url);
+      let body = { ...userDetails };
       axios
-        .post(url, userDetails)
+        .post(url, body)
         .then((res) => {
-          console.log("Response", res);
+          let message = res.data.message;
+          alert(message);
         })
         .catch((error) => {
           console.log("error:", error);
@@ -115,7 +117,7 @@ export default function Login() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

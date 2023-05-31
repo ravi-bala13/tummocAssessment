@@ -6,8 +6,6 @@ const { uuid } = require("uuidv4");
 const User = require("../models/user.model");
 const { newToken } = require("../controllers/auth.controller");
 
-console.log("process.env.GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-
 passport.use(
   new GoogleStrategy(
     {

@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const { saveToken } = require("../utils/JwtUtils");
 
 require("dotenv").config();
 
@@ -14,9 +15,10 @@ const register = async (req, res) => {
 
   // if it already exists then throw an error
   if (user) {
-    return res
-      .status(400)
-      .json({ status: "failed", message: "Please provide a different email" });
+    return res.status(400).json({
+      status: "Failed",
+      message: "User already exist. Please provide a different email",
+    });
   }
 
   // else we will create the user
@@ -28,9 +30,12 @@ const register = async (req, res) => {
   // we will create the token
   const token = newToken(user);
 
+  // save the token in the db with ttl of 5 minutes
+  saveToken(token);
+
   // return the user and the token
 
-  res.status(201).send({ user, token });
+  res.status(201).send({ token, message: "User created successfully" });
 };
 
 const login = async (req, res) => {
@@ -62,7 +67,7 @@ const login = async (req, res) => {
     const token = newToken(user);
 
     // return the user and the token
-    res.status(201).json({ user, token });
+    res.status(201).json({ token, message: "Login succcessfully" });
   } catch (e) {
     return res.status(500).json({ status: "failed", message: e.message });
   }

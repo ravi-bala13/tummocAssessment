@@ -31,11 +31,15 @@ export default function Signup() {
     event.preventDefault();
     try {
       let url = BackendUrl + "register";
+      let body = { ...userDetails };
+      console.log("body:", body);
       console.log("Network calling to url", url);
       axios
-        .post(url, userDetails)
+        .post(url, body)
         .then((res) => {
           console.log("Response", res);
+          let message = res.data.message;
+          alert(message);
         })
         .catch((error) => {
           console.log("error:", error);
@@ -134,7 +138,7 @@ export default function Signup() {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/login" variant="body2">
                     Already have an account? Sign in
                   </Link>
                 </Grid>

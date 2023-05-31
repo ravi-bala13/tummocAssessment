@@ -5,7 +5,7 @@ const JwtToken = require("../models/jwt.model");
  * Token will automaticaly delete after 5 minutes when it is created
  * @param {String} jwtToken
  */
-function saveToken(jwtToken) {
+async function saveToken(jwtToken) {
   try {
     const token = new JwtToken({
       token: jwtToken,

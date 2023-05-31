@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 } */
+
+.google_login {
+  /* border: 1px solid red; */
+  width: 20%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.user_form {
+  /* border: 1px solid red; */
+}

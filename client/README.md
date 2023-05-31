@@ -1,3 +1,17 @@
+## Steps to follow implement Google OAuth
+
+    1. Set up a new project in the Google Developers Console:
+        a. Go to the Google Developers Console (https://console.developers.google.com/).
+        b. Create a new project and enable the Google+ API.
+        c. Go to  OAuth consent screen on left side navbar and Configure that, by providing the necessary information such as the application name and authorized domains.
+        d. Go to Credetials tab, Obtain the client ID and client secret for your application.
+
+    2. Client-side implementation:
+        a. Install the required dependencies:
+        ```bash
+            npm install react-google-login
+        ```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

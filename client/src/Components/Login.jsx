@@ -14,8 +14,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GLogin from "./GLogin";
 import { BackendUrl } from "../Utils/Contants";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "../Redux/action";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const defaultTheme = createTheme();
 
   const [userDetails, setUserDetails] = useState({
@@ -36,11 +39,15 @@ export default function Login() {
       axios
         .post(url, body)
         .then((res) => {
-          let message = res.data.message;
+          const { token, message } = res.data;
+          dispatch(setToken(token));
           alert(message);
         })
         .catch((error) => {
-          console.log("error:", error);
+          // console.log("error:", error.response);
+
+          let message = error.response.data.message;
+          alert(message);
         });
     } catch (error) {
       console.log("Error in handleSubmit", error);
@@ -86,6 +93,7 @@ export default function Login() {
                 autoComplete="email"
                 autoFocus
                 onChange={handleChange}
+                value={userDetails.email}
               />
               <TextField
                 margin="normal"
@@ -97,6 +105,7 @@ export default function Login() {
                 id="password"
                 autoComplete="current-password"
                 onChange={handleChange}
+                value={userDetails.password}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

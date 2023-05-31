@@ -1,8 +1,10 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useSelector } from "react-redux";
 function NavbarTop() {
-  const token = "";
+  const { token } = useSelector((state) => state);
+  console.log("token:", token);
   const userName = "";
   return (
     <>
@@ -12,8 +14,7 @@ function NavbarTop() {
           <Nav className="me-auto">
             {token ? (
               <>
-                <Nav.Link href="/home">Home</Nav.Link>
-                <Nav.Link href="/postForm">Create Post</Nav.Link>
+                <Nav.Link href="/home">Dashboard</Nav.Link>
               </>
             ) : null}
           </Nav>

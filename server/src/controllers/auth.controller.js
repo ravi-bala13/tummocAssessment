@@ -1,12 +1,14 @@
 const User = require("../models/user.model");
-const { saveToken } = require("../utils/JwtUtils");
+const { JWT_ACCESS_KEY } = require("../utils/Constants");
+const { saveToken, removeTokenFromDb } = require("../utils/JwtUtils");
+const bcrypt = require("bcrypt");
 
 require("dotenv").config();
 
 const jwt = require("jsonwebtoken");
 
 const newToken = (user) => {
-  return jwt.sign({ user: user }, process.env.JWT_ACCESS_KEY);
+  return jwt.sign({ user: user }, process.env.JWT_ACCESS_KEY || JWT_ACCESS_KEY);
 };
 
 const register = async (req, res) => {
@@ -20,6 +22,10 @@ const register = async (req, res) => {
       message: "User already exist. Please provide a different email",
     });
   }
+
+  // hashing the password
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  req.body.password = hashedPassword;
 
   // else we will create the user
   user = await User.create(req.body);
@@ -52,14 +58,17 @@ const login = async (req, res) => {
     }
 
     // else we match the password
-
-    const match = await user.checkPassword(req.body.password);
+    // Check if the password is correct using bcrypt
+    const passwordMatches = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
 
     // if not match then throw an error
-    if (!match) {
+    if (!passwordMatches) {
       return res.status(400).json({
         status: "failed",
-        message: "email or password is wrong",
+        message: "Invalid email or password",
       });
     }
 
@@ -72,6 +81,16 @@ const login = async (req, res) => {
     return res.status(500).json({ status: "failed", message: e.message });
   }
   // res.status(201).send("Login");
+};
+
+const logout = async (req, res) => {
+  try {
+    removeTokenFromDb();
+    res.status(201).json({ token, message: "Logout succcessfully" });
+  } catch (error) {
+    console.log("error:", error);
+    return res.status(500).json({ status: "failed", message: error.message });
+  }
 };
 
 module.exports = { register, login };

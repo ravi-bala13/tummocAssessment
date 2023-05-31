@@ -4,6 +4,8 @@ const cors = require("cors");
 const { register, login } = require("./controllers/auth.controller");
 
 const passport = require("./configs/passport");
+const protected = require("./controllers/protected.controller");
+const { expireToken } = require("./middlewares/auth.middleware");
 
 const app = express();
 
@@ -31,9 +33,25 @@ app.get("/health_check", (req, res) => {
     .send("Hi my dear friend, i am working fine don't worry");
 });
 
-// app.get("/hai", (req, res) => {
-//   return res.send("hai");
-// })
+// app.use("/testing", protected);
+/**
+ * jwt auth
+ */
+
+app.get(
+  "/protected",
+  passport.authenticate("jwt", { session: false }),
+  expireToken,
+  (req, res) => {
+    return res
+      .status(200)
+      .send("Hi my dear friend, i am working fine don't worry");
+  }
+);
+
+/**
+ * Google OAuth
+ */
 
 app.get(
   "/auth/google",
@@ -56,5 +74,7 @@ app.get(
 app.get("/auth/google/failure", function (req, res) {
   return res.send("Something went wrong");
 });
+
+// *****************************
 
 module.exports = app;

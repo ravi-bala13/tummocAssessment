@@ -12,8 +12,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GLogin from "./GLogin";
 import { BackendUrl } from "../Utils/Contants";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "../Redux/action";
 
 export default function Signup() {
+  const dispatch = useDispatch();
   const defaultTheme = createTheme();
 
   const [userDetails, setUserDetails] = useState({
@@ -37,12 +40,14 @@ export default function Signup() {
       axios
         .post(url, body)
         .then((res) => {
-          console.log("Response", res);
-          let message = res.data.message;
+          const { token, message } = res.data;
+          dispatch(setToken(token));
           alert(message);
         })
         .catch((error) => {
           console.log("error:", error);
+          let message = error.response.data.message;
+          alert(message);
         });
     } catch (error) {
       console.log("Error in handleSubmit", error);
@@ -91,6 +96,7 @@ export default function Signup() {
                     label="First Name"
                     autoFocus
                     onChange={handleChange}
+                    value={userDetails.firstName}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -102,6 +108,7 @@ export default function Signup() {
                     name="lastName"
                     autoComplete="family-name"
                     onChange={handleChange}
+                    value={userDetails.lastName}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -113,6 +120,7 @@ export default function Signup() {
                     name="email"
                     autoComplete="email"
                     onChange={handleChange}
+                    value={userDetails.email}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -125,6 +133,7 @@ export default function Signup() {
                     id="password"
                     autoComplete="new-password"
                     onChange={handleChange}
+                    value={userDetails.password}
                   />
                 </Grid>
               </Grid>

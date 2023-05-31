@@ -1,0 +1,7 @@
+GOOGLE_CLIENT_ID =
+  "114795515832-o3bcjbgu9poa63i47nv8rr15j7i1ivbo.apps.googleusercontent.com";
+GOOGLE_CLIENT_SECRET = "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";
+
+JWT_ACCESS_KEY = "tummoc";
+
+module.exports = { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, JWT_ACCESS_KEY };

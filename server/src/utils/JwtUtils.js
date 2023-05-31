@@ -47,8 +47,8 @@ async function removeTokenFromDb(tokenValue) {
  */
 async function isTokenPresentInDb(token) {
   try {
-    const token = await JwtToken.findOne({ token: token });
-    if (token) {
+    const tokenFromDb = await JwtToken.findOne({ token: token });
+    if (tokenFromDb) {
       return true;
     } else {
       return false;

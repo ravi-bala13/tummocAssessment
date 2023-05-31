@@ -67,7 +67,6 @@ passport.use(
     try {
       // Find the user based on the payload (e.g., user ID)
       const user = await User.findById(payload.user._id);
-      console.log("user:", user);
 
       if (user) {
         // If the user is found, pass it to the next middleware
@@ -82,14 +81,5 @@ passport.use(
     }
   })
 );
-
-function extractTokenFromHeader(req) {
-  const authorizationHeader = req.headers.authorization;
-  if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
-    const token = authorizationHeader.substring(7); // Remove 'Bearer ' from the header value
-    return token;
-  }
-  return null;
-}
 
 module.exports = passport;

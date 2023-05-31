@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 
-const { register, login } = require("./controllers/auth.controller");
+const { register, login, logout } = require("./controllers/auth.controller");
 
 const passport = require("./configs/passport");
-const protected = require("./controllers/protected.controller");
 const { expireToken } = require("./middlewares/auth.middleware");
 
 const app = express();
@@ -25,6 +24,7 @@ passport.deserializeUser(function (user, done) {
 
 app.post("/register", register);
 app.post("/login", login);
+app.get("/logout", logout);
 
 // app.use("/users", userController);
 app.get("/health_check", (req, res) => {
@@ -40,8 +40,7 @@ app.get("/health_check", (req, res) => {
 
 app.get(
   "/protected",
-  passport.authenticate("jwt", { session: false }),
-  expireToken,
+  [passport.authenticate("jwt", { session: false }), expireToken],
   (req, res) => {
     return res
       .status(200)

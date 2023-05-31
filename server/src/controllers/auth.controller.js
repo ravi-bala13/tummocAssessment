@@ -75,6 +75,9 @@ const login = async (req, res) => {
     // if it matches then create the token
     const token = newToken(user);
 
+    // save the token in the db with ttl of 5 minutes
+    saveToken(token);
+
     // return the user and the token
     res.status(201).json({ token, message: "Login succcessfully" });
   } catch (e) {
@@ -85,12 +88,13 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    removeTokenFromDb();
-    res.status(201).json({ token, message: "Logout succcessfully" });
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    removeTokenFromDb(token);
+    res.status(201).json({ message: "Logout succcessfully" });
   } catch (error) {
     console.log("error:", error);
     return res.status(500).json({ status: "failed", message: error.message });
   }
 };
 
-module.exports = { register, login };
+module.exports = { register, login, logout };

@@ -5,6 +5,7 @@ const session = require("express-session");
 
 const { register, login, logout } = require("./controllers/auth.controller");
 const protected = require("./controllers/protected.controller");
+const userController = require("./controllers/user.controller");
 
 const passport = require("./configs/passport");
 const { expireToken } = require("./middlewares/auth.middleware");
@@ -40,6 +41,8 @@ app.get("/health_check", (req, res) => {
 });
 
 app.use("/testing", protected);
+
+app.use("/users", userController);
 /**
  * jwt auth
  */

@@ -45,3 +45,22 @@
   justify-content: center;
   margin-top: 15px;
 }
+
+.user_detail_form {
+  width: 40%;
+  margin: auto;
+  margin-top: 100px;
+}
+
+.table_div {
+  width: 40%;
+  margin: auto;
+  margin-top: 50px;
+  border: 1px solid red;
+  justify-content: center;
+}
+
+.table_div td {
+  border: 1px solid salmon;
+  width: 5%;
+}

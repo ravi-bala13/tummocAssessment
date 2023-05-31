@@ -16,8 +16,10 @@ import { BackendUrl } from "../Utils/Contants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../Redux/action";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const { token } = useSelector((state) => state);
   const dispatch = useDispatch();
   const defaultTheme = createTheme();
@@ -58,6 +60,10 @@ export default function Login() {
       password: "",
     });
   };
+
+  if (token) {
+    navigate("/dashboard");
+  }
 
   return (
     <>

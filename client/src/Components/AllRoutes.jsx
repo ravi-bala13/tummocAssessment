@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
 import PrivateRoute from "./PrivateRoute";
+import Dashboard from "./Dashboard";
 
 export default function AllRoutes() {
   return (
@@ -14,7 +15,7 @@ export default function AllRoutes() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Signup />
+              <Dashboard />
             </PrivateRoute>
           }
         />

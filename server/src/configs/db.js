@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connect = () => {
-  return mongoose.connect(
-    "mongodb+srv://ravibala-13:bals1999@cluster0.hfo0i.mongodb.net/tummoc_auth"
-  );
+  return mongoose.connect(process.env.MONGO_DB_CONNECTION_URL);
 };
 
 module.exports = connect;

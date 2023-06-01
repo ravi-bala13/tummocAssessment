@@ -80,9 +80,9 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/auth/google/failure",
+    session: false,
   }),
   function (req, res) {
-    console.log("req:", req);
     return res.status(201).json({ user: req.user.user, token: req.user.token });
   }
 );

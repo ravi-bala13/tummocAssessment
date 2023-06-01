@@ -11,17 +11,13 @@ const { uuid } = require("uuidv4");
 const User = require("../models/user.model");
 const JwtToken = require("../models/jwt.model");
 const { newToken } = require("../controllers/auth.controller");
-const {
-  GOOGLE_CLIENT_SECRET,
-  GOOGLE_CLIENT_ID,
-  JWT_ACCESS_KEY,
-} = require("../utils/Constants");
+const { BACKEND_URL } = require("../utils/Constants");
 
 // Google OAuth strategy configuration
 const googleOptions = {
-  clientID: process.env.GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET || GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:8080/auth/google/callback",
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: `${BACKEND_URL}auth/google/callback`,
   userProfileURL: "https://**www**.googleapis.com/oauth2/v3/userinfo",
   passReqToCallback: true,
 };

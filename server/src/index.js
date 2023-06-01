@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const { FRONTEND_URL } = require("./utils/Constants.js");
 const session = require("express-session");
 
 const { register, login, logout } = require("./controllers/auth.controller");
@@ -88,7 +88,7 @@ app.get(
   }),
   function (req, res) {
     res.cookie("token", req.user.token);
-    return res.redirect("http://localhost:3000/dashboard");
+    return res.redirect(`${FRONTEND_URL}dashboard`);
     // return res.status(201).json({ user: req.user.user, token: req.user.token });
   }
 );

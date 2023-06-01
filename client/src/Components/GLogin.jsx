@@ -2,7 +2,7 @@ import React from "react";
 import { BackendUrl } from "../Utils/Contants";
 
 const GLogin = () => {
-  const url = `${BackendUrl}/auth/google`;
+  const url = `${BackendUrl}auth/google`;
   return (
     <div className="google_login">
       <a href={url}>

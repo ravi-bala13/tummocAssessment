@@ -18,6 +18,14 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use(
+  session({
+    secret: "tummoc",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 app.use(passport.initialize());
 // app.use("/users", userController) // /register /login
 

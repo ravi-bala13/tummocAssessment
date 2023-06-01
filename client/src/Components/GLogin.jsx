@@ -1,9 +1,11 @@
 import React from "react";
+import { BackendUrl } from "../Utils/Contants";
 
 const GLogin = () => {
+  const url = `${BackendUrl}/auth/google`;
   return (
     <div className="google_login">
-      <a href="http://localhost:8080/auth/google">
+      <a href={url}>
         <img
           className="g_login_img"
           alt="google_login_img"

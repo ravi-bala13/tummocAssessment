@@ -43,7 +43,9 @@
   margin: auto;
   display: flex;
   justify-content: center;
+  align-content: center;
   margin-top: 15px;
+  box-sizing: border-box;
 }
 
 .user_detail_form {
@@ -63,4 +65,11 @@
 .table_div td {
   border: 1px solid salmon;
   width: 5%;
+}
+
+.g_login_img {
+  width: 80%;
+  /* margin: auto; */
+  margin-left: 10%;
+  /* border: 1px solid darkblue; */
 }

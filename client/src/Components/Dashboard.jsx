@@ -101,8 +101,8 @@ export default function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            {usersList.map((el) => (
-              <tr>
+            {usersList.map((el, i) => (
+              <tr key={i}>
                 <td>{el.name}</td>
                 <td>{el.email}</td>
                 <td>{el.city}</td>

@@ -1,10 +1,14 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { setToken } from "../Redux/action";
 
 function PrivateRoute({ children }) {
-  const { token } = useSelector((state) => state);
-  console.log("token:", token);
+  const token = Cookies.get("token");
+  const dispatch = useDispatch();
+  dispatch(setToken(token));
+
   if (!token) {
     return <Navigate to={"/login"}></Navigate>;
   }

@@ -12,6 +12,10 @@ const { expireToken } = require("./middlewares/auth.middleware");
 
 const app = express();
 
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser());
+
 app.use(express.json());
 var corsOptions = {
   origin: "*",
@@ -27,6 +31,7 @@ app.use(
 );
 
 app.use(passport.initialize());
+app.use(passport.session());
 // app.use("/users", userController) // /register /login
 
 passport.serializeUser(function ({ user, token }, done) {
@@ -34,7 +39,7 @@ passport.serializeUser(function ({ user, token }, done) {
 });
 
 passport.deserializeUser(function (user, done) {
-  done(err, user);
+  done(null, user);
 });
 
 app.post("/register", register);
@@ -80,10 +85,11 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/auth/google/failure",
-    session: false,
   }),
   function (req, res) {
-    return res.status(201).json({ user: req.user.user, token: req.user.token });
+    res.cookie("token", req.user.token);
+    return res.redirect("http://localhost:3000/dashboard");
+    // return res.status(201).json({ user: req.user.user, token: req.user.token });
   }
 );
 

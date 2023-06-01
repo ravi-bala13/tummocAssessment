@@ -77,7 +77,7 @@ const login = async (req, res) => {
 
     // save the token in the db with ttl of 5 minutes
     saveToken(token);
-
+    res.cookie("token", token);
     // return the user and the token
     res.status(201).json({ token, message: "Login succcessfully" });
   } catch (e) {
@@ -88,9 +88,8 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
     removeTokenFromDb(token);
-    res.status(201).json({ message: "Logout succcessfully" });
+    return res.status(201).json({ message: "Logout succcessfully" });
   } catch (error) {
     console.log("error:", error);
     return res.status(500).json({ status: "failed", message: error.message });

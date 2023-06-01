@@ -41,6 +41,7 @@ export default function Signup() {
         .post(url, body)
         .then((res) => {
           const { token, message } = res.data;
+          document.cookie = `token=${token}; path=/;`;
           dispatch(setToken(token));
           alert(message);
         })

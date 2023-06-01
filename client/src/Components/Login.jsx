@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -44,6 +44,7 @@ export default function Login() {
         .then((res) => {
           const { token, message } = res.data;
           dispatch(setToken(token));
+          document.cookie = `token=${token}; path=/;`;
           alert(message);
         })
         .catch((error) => {
@@ -61,9 +62,11 @@ export default function Login() {
     });
   };
 
-  if (token) {
-    navigate("/dashboard");
-  }
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
 
   return (
     <>

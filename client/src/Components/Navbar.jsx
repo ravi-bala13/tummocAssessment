@@ -1,19 +1,25 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BackendUrl } from "../Utils/Contants";
 import axios from "axios";
 import { setToken } from "../Redux/action";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 function NavbarTop() {
-  const { token } = useSelector((state) => state);
-  console.log("token:", token);
+  const navigate = useNavigate();
   const userName = "";
 
+  const token = Cookies.get("token");
   const dispatch = useDispatch();
+  dispatch(setToken(token));
 
   const handleLogout = () => {
+    // clear the token from the cookie by setting expiry date to the past
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     try {
       let url = BackendUrl + "logout";
       console.log("Network calling to url", url);
@@ -21,6 +27,7 @@ function NavbarTop() {
         .get(url)
         .then((res) => {
           const { message } = res.data;
+          console.log("message:", message);
           dispatch(setToken(null));
           alert(message);
         })
@@ -31,6 +38,8 @@ function NavbarTop() {
     } catch (error) {
       console.log("Error in handleSubmit", error);
     }
+
+    navigate("/login");
   };
 
   return (

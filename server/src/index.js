@@ -17,10 +17,18 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 app.use(express.json());
-var corsOptions = {
-  origin: "*",
-};
-app.use(cors(corsOptions));
+// var corsOptions = {
+//   origin: ["http://localhost:3000"],
+//   Credential: true,
+// };
+// app.use(cors(corsOptions));
+
+app.use(
+  cors({
+    origin: ["https://tummoc-assessment.vercel.app/", "http://localhost:3000"],
+    credentials: true, // Enable sending cookies across origins
+  })
+);
 
 app.use(
   session({
@@ -44,7 +52,7 @@ passport.deserializeUser(function (user, done) {
 
 app.post("/register", register);
 app.post("/login", login);
-app.get("/logout", logout);
+// app.get("/logout", logout);
 
 // app.use("/users", userController);
 app.get("/health_check", (req, res) => {
@@ -95,6 +103,31 @@ app.get(
 
 app.get("/auth/google/failure", function (req, res) {
   return res.send("Something went wrong");
+});
+
+app.get("/auth/google/login", (req, res) => {
+  if (req.user) {
+    res.status(200).json({
+      error: false,
+      message: "Successfully Loged In",
+      token: req.user.token,
+    });
+  } else {
+    res.status(403).json({ error: true, message: "Not Authorized" });
+  }
+});
+
+app.get("/auth/google/logout", (req, res) => {
+  console.log("req:", req.user.token);
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).json({ error: "Failed to destroy session" });
+    }
+
+    // Clear any relevant session data or user information
+    return res.redirect(`${FRONTEND_URL}dashboard`);
+  });
 });
 
 // *****************************

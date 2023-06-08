@@ -25,10 +25,12 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["https://tummoc-assessment.vercel.app/", "http://localhost:3000"],
+    origin: ["https://tummoc-assessment.vercel.app", "http://localhost:3000"],
     credentials: true, // Enable sending cookies across origins
   })
 );
+
+app.options("*", cors()); // Enable preflight requests for all routes
 
 app.use(
   session({
@@ -52,10 +54,9 @@ passport.deserializeUser(function (user, done) {
 
 app.post("/register", register);
 app.post("/login", login);
-// app.get("/logout", logout);
 
 // app.use("/users", userController);
-app.get("/health_check", (req, res) => {
+app.get("/", (req, res) => {
   return res
     .status(200)
     .send("Hi my dear friend, i am working fine don't worry");

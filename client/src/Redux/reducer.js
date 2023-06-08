@@ -1,8 +1,9 @@
-import { SET_ISLOADING, SET_TOKEN } from "./actionTypes";
+import { SET_ISLOADING, SET_TOKEN, SET_USERNAME } from "./actionTypes";
 
 const initState = {
   token: null,
   isLoading: false,
+  username: null,
 };
 
 export const reducer = (state = initState, { type, payload }) => {
@@ -17,6 +18,11 @@ export const reducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         isLoading: payload,
+      };
+    case SET_USERNAME:
+      return {
+        ...state,
+        username: payload,
       };
 
     default:

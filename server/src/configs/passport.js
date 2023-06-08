@@ -33,7 +33,7 @@ passport.use(
     profile,
     done
   ) {
-    console.log("profile:", profile);
+    // console.log("profile:", profile);
     let user = await User.findOne({ email: profile?._json?.email })
 
       .lean()
@@ -41,13 +41,13 @@ passport.use(
 
     if (!user) {
       user = await User.create({
+        firstName: profile?._json?.name,
         email: profile?._json?.email,
         password: uuid(),
       });
     }
-    console.log("user:", user);
+
     const token = newToken(user);
-    console.log("token:", token);
     return done(null, { user, token });
   })
 );

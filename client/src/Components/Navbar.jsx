@@ -4,11 +4,17 @@ import Navbar from "react-bootstrap/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../Redux/action";
 import { useNavigate } from "react-router-dom";
+import { parseToken } from "../Utils/JwtUtils";
 
 function NavbarTop() {
   const { token } = useSelector((store) => store);
   const navigate = useNavigate();
-  const userName = "";
+  let userName = null;
+  if (token) {
+    const payload = parseToken(token);
+    const { firstName } = payload?.user;
+    userName = firstName;
+  }
 
   const dispatch = useDispatch();
 

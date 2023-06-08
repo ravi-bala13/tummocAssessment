@@ -17,12 +17,11 @@ export default function Dashboard() {
       axios
         .get(url)
         .then((res) => {
-          console.log("res:", res);
           setUsersList(res.data);
         })
         .catch((error) => {
-          console.log("error:", error);
-          let message = error.response.data.message;
+          console.log("Error in getData:", error);
+          let message = error.response?.data?.message;
           alert(message);
         });
     } catch (error) {
@@ -45,8 +44,8 @@ export default function Dashboard() {
           });
         })
         .catch((error) => {
-          console.log("error:", error);
-          let message = error.response.data.message;
+          console.log("Error in handleSubmit:", error);
+          let message = error.response?.data?.message;
           alert(message);
         });
     } catch (error) {

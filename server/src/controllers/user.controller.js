@@ -11,7 +11,6 @@ router.get("/", async (req, res) => {
       .populate({ path: "city", select: "name" })
       .exec()
       .then((result) => {
-        console.log(result);
         return result;
       })
       .catch((error) => {

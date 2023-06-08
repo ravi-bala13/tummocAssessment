@@ -40,14 +40,13 @@ export default function Signup() {
       axios
         .post(url, body)
         .then((res) => {
-          const { token, message } = res.data;
-          document.cookie = `token=${token}; path=/;`;
-          dispatch(setToken(token));
+          const { token: userToken, message } = res.data;
+          dispatch(setToken(userToken));
           alert(message);
         })
         .catch((error) => {
-          console.log("error:", error);
-          let message = error.response.data.message;
+          console.log("Error in handleSubmit:", error);
+          let message = error.response?.data?.message;
           alert(message);
         });
     } catch (error) {

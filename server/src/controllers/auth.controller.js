@@ -1,15 +1,8 @@
 const User = require("../models/user.model");
-const { JWT_ACCESS_KEY } = require("../utils/Constants");
-const { saveToken, removeTokenFromDb } = require("../utils/JwtUtils");
+const { newToken } = require("../utils/JwtUtils");
 const bcrypt = require("bcrypt");
 
 require("dotenv").config();
-
-const jwt = require("jsonwebtoken");
-
-const newToken = (user) => {
-  return jwt.sign({ user: user }, process.env.JWT_ACCESS_KEY || JWT_ACCESS_KEY);
-};
 
 const register = async (req, res) => {
   // check if the email address provided already exist
@@ -36,11 +29,7 @@ const register = async (req, res) => {
   // we will create the token
   const token = newToken(user);
 
-  // save the token in the db with ttl of 5 minutes
-  saveToken(token);
-
   // return the user and the token
-
   res.status(201).send({ token, message: "User created successfully" });
 };
 
@@ -75,9 +64,6 @@ const login = async (req, res) => {
     // if it matches then create the token
     const token = newToken(user);
 
-    // save the token in the db with ttl of 5 minutes
-    saveToken(token);
-    res.cookie("token", token);
     // return the user and the token
     res.status(201).json({ token, message: "Login succcessfully" });
   } catch (e) {
@@ -88,7 +74,6 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    removeTokenFromDb(token);
     return res.status(201).json({ message: "Logout succcessfully" });
   } catch (error) {
     console.log("error:", error);

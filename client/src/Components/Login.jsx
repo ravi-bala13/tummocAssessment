@@ -42,16 +42,12 @@ export default function Login() {
       axios
         .post(url, body)
         .then((res) => {
-          const { token, message } = res.data;
-          dispatch(setToken(token));
-          document.cookie = `token=${token}; path=/;`;
+          const { token: userToken, message } = res.data;
+          dispatch(setToken(userToken));
           alert(message);
         })
         .catch((error) => {
-          // console.log("error:", error.response);
-
-          let message = error.response.data.message;
-          alert(message);
+          console.log("Error in handleSubmit catch:", error);
         });
     } catch (error) {
       console.log("Error in handleSubmit", error);
@@ -66,6 +62,8 @@ export default function Login() {
     if (token) {
       navigate("/dashboard");
     }
+    //  to ignore the warning
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return (

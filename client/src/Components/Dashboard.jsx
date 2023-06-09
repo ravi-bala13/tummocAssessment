@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BackendUrl } from "../Utils/Contants";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
   const [usersList, setUsersList] = useState([]);
@@ -9,14 +10,20 @@ export default function Dashboard() {
     city: "",
     email: "",
   });
+  const { token } = useSelector((store) => store);
 
   const getData = () => {
     try {
       let url = BackendUrl + "users";
       console.log("Network calling to url", url);
       axios
-        .get(url)
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
+          console.log("res:", res);
           setUsersList(res.data);
         })
         .catch((error) => {
@@ -34,7 +41,11 @@ export default function Dashboard() {
       let url = BackendUrl + "users";
       console.log("Network calling to url", url);
       axios
-        .post(url, userDetail)
+        .post(url, userDetail, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           console.log("res:", res);
           setUserDetail({

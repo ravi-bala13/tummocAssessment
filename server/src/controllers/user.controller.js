@@ -7,18 +7,27 @@ const City = require("../models/city.model");
 
 router.get("/", async (req, res) => {
   try {
-    const user = await UserDetail.find()
-      .populate({ path: "city", select: "name" })
-      .exec()
-      .then((result) => {
-        return result;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const user = await UserDetail.aggregate([
+      {
+        $lookup: {
+          from: "cities", // Collection name for City model
+          localField: "city",
+          foreignField: "_id",
+          as: "cityData",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          city: { $arrayElemAt: ["$cityData.name", 0] },
+        },
+      },
+    ]).exec();
 
     return res.status(200).send(user);
   } catch (e) {
+    console.log("Error in get uses:", e);
     return res.status(500).json({ message: e.message, status: "Failed" });
   }
 });
@@ -31,12 +40,11 @@ router.post("/", async (req, res) => {
     let cityData = await City.findOne({ name: city });
 
     if (!cityData) {
-      //   return res.status(400).json({ message: 'City not found' });
       cityData = await City.create({ name: city });
     }
 
     // Create a new user detail object with the city reference
-    const userDetail = new UserDetail({ name, email, city: city._id });
+    const userDetail = new UserDetail({ name, email, city: cityData._id });
 
     // Save the user detail to the database
     await userDetail.save();

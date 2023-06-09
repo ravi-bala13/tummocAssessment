@@ -10,18 +10,17 @@ const newToken = (user) => {
 
 // Verify JWT and check if it has expired
 const verifyToken = (token) => {
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      if (err.name === "TokenExpiredError") {
-        console.log("Token has expired");
-      } else {
-        console.log("Invalid token");
-      }
-    } else {
-      console.log("Token is valid");
-      console.log("Decoded payload:", decoded);
-    }
-  });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
+    console.log(decoded);
+    // The token is valid
+    // The decoded object contains the decoded payload
+    return true;
+  } catch (error) {
+    console.error("Failed to verify JWT:", error.message);
+    // The token is invalid or has expired
+    return false;
+  }
 };
 
 module.exports = {

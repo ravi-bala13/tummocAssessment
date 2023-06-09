@@ -37,7 +37,7 @@ app.use(
     secret: "tummoc",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 1 * 60 * 1000 }, // 1 minutes expiration
+    cookie: { maxAge: 6000 }, // 2 minutes expiration
     store,
   })
 );
@@ -78,19 +78,20 @@ passport.deserializeUser(function (user, done) {
 app.post("/register", register);
 app.post("/login", login);
 
-// app.use("/users", userController);
 app.get("/", (req, res) => {
   return res
     .status(200)
     .send("Hi my dear friend, i am working fine don't worry");
 });
 
-app.use("/testing", protected);
-
-app.use("/users", userController);
 /**
  * jwt auth
  */
+app.use(
+  "/users",
+  [passport.authenticate("jwt", { session: false }), expireToken],
+  userController
+);
 
 app.get(
   "/protected",

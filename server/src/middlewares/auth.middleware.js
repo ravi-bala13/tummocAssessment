@@ -1,9 +1,10 @@
-const { isTokenPresentInDb } = require("../utils/JwtUtils");
+const { isTokenPresentInDb, verifyToken } = require("../utils/JwtUtils");
 
 // Middleware to handle token expiration
 const expireToken = async (req, res, next) => {
   const token = req.headers.authorization?.replace("Bearer ", "");
-  const isPresent = await isTokenPresentInDb(token);
+  let isPresent = verifyToken(token);
+
   if (!isPresent) {
     return res.status(401).json({ message: "Token expired" });
   }

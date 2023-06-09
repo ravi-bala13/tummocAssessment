@@ -1,48 +1,71 @@
 const express = require("express");
 const cors = require("cors");
 const { FRONTEND_URL } = require("./utils/Constants.js");
-const session = require("express-session");
-
-const { register, login, logout } = require("./controllers/auth.controller");
-const protected = require("./controllers/protected.controller");
-const userController = require("./controllers/user.controller");
-
-const passport = require("./configs/passport");
-const { expireToken } = require("./middlewares/auth.middleware");
-
 const app = express();
+app.use(express.json()); // to parse the body of the request
 
-const cookieParser = require("cookie-parser");
+// **********************************
 
-app.use(cookieParser());
+const connect = require("./configs/db.js");
 
-app.use(express.json());
-// var corsOptions = {
-//   origin: ["http://localhost:3000"],
-//   Credential: true,
-// };
-// app.use(cors(corsOptions));
+const session = require("express-session");
+const MongoStore = require("connect-mongo"); //using for session store
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-app.use(
-  cors({
-    origin: ["https://tummoc-assessment.vercel.app", "http://localhost:3000"],
-    credentials: true, // Enable sending cookies across origins
-  })
-);
+(async () => {
+  try {
+    await connect(); // Establish the database connection
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Failed to connect to MongoDB", error);
+  }
+})();
 
-app.options("*", cors()); // Enable preflight requests for all routes
+// session store
+
+const store = MongoStore.create({
+  mongoUrl: process.env.MONGO_DB_CONNECTION_URL,
+  mongooseConnection: mongoose.connection,
+  collectionName: "sessions",
+  autoRemove: "interval",
+  autoRemoveInterval: 2, // Remove expired sessions every 10 minutes
+});
 
 app.use(
   session({
     secret: "tummoc",
     resave: false,
     saveUninitialized: true,
+    cookie: { maxAge: 1 * 60 * 1000 }, // 1 minutes expiration
+    store,
   })
 );
 
+// **********************************
+
+const { register, login } = require("./controllers/auth.controller");
+const protected = require("./controllers/protected.controller");
+const userController = require("./controllers/user.controller");
+
+const passport = require("./configs/passport");
+const { expireToken } = require("./middlewares/auth.middleware");
+
+// const cookieParser = require("cookie-parser");
+
+// app.use(cookieParser());
+
+var corsOptions = {
+  origin: ["https://tummoc-assessment.vercel.app", "http://localhost:3000"],
+  credentials: true, // Enable sending cookies across origins
+};
+// app.use(cors());
+
+app.use(cors(corsOptions));
+app.options("*", cors()); // Enable preflight requests for all routes
+
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use("/users", userController) // /register /login
 
 passport.serializeUser(function ({ user, token }, done) {
   done(null, { user, token });
@@ -119,7 +142,6 @@ app.get("/auth/google/login", (req, res) => {
 });
 
 app.get("/auth/google/logout", (req, res) => {
-  console.log("req:", req.user.token);
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
@@ -132,5 +154,9 @@ app.get("/auth/google/logout", (req, res) => {
 });
 
 // *****************************
+const port = 8080;
+app.listen(port, () => {
+  console.log("Server listening on port 8080");
+});
 
 module.exports = app;

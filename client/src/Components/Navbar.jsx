@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../Redux/action";
 import { useNavigate } from "react-router-dom";
 import { parseToken } from "../Utils/JwtUtils";
+import { BackendUrl } from "../Utils/Contants";
 
 function NavbarTop() {
   const { token } = useSelector((store) => store);
@@ -19,10 +20,10 @@ function NavbarTop() {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    // To delete the token as no longer availabe after logout
     dispatch(setToken(null));
     alert("Logout successfully");
-
-    navigate("/login");
+    window.open(`${BackendUrl}auth/google/logout`, "_self");
   };
 
   return (

@@ -9,7 +9,6 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const { uuid } = require("uuidv4");
 
 const User = require("../models/user.model");
-const JwtToken = require("../models/jwt.model");
 const { newToken } = require("../controllers/auth.controller");
 const { BACKEND_URL } = require("../utils/Constants");
 
